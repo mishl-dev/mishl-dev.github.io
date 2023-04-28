@@ -48,12 +48,18 @@
         <img id="profile-image" src="https://lanyard.cnrad.dev/api/1025245410224263258?theme=dark&bg=171515&borderRadius=15px&animated=true&idleMessage=PRobly%20Dying%20Idk" alt="Discord Profile">
     </div>
     <script>
+        const showProfileButton = document.getElementById('show-profile');
         const discordProfile = document.getElementById('discord-profile');
-        document.getElementById('show-profile').addEventListener('click', function() {
-            if (discordProfile.style.display === 'block') {
-                discordProfile.style.display = 'none';
-            } else {
+        let showProfile = true;
+        showProfileButton.addEventListener('click', function() {
+            if (showProfile) {
                 discordProfile.style.display = 'block';
+                showProfileButton.textContent = 'Hide Discord Profile';
+                showProfile = false;
+            } else {
+                discordProfile.style.display = 'none';
+                showProfileButton.textContent = 'Show Discord Profile';
+                showProfile = true;
             }
         });
 
