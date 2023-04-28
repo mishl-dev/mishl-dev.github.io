@@ -23,6 +23,13 @@
             color: white;
             box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
             margin-bottom: 20px;
+            transition: all 0.3s ease;
+            opacity: 1;
+        }
+
+        .about-me.hide {
+            opacity: 0;
+            pointer-events: none;
         }
 
         button {
@@ -65,18 +72,20 @@
     <script>
         const showProfileButton = document.getElementById('show-profile');
         const discordProfile = document.getElementById('discord-profile');
+        const aboutMe = document.querySelector('.about-me');
         let showProfile = true;
         showProfileButton.addEventListener('click', function() {
             if (showProfile) {
                 discordProfile.style.display = 'block';
                 showProfileButton.textContent = 'Hide Discord Profile';
+                aboutMe.classList.add('hide');
                 showProfile = false;
             } else {
                 discordProfile.style.display = 'none';
                 showProfileButton.textContent = 'Show Discord Profile';
+                aboutMe.classList.remove('hide');
                 showProfile = true;
             }
-            showProfileButton.classList.toggle('animated');
         });
 
         document.getElementById('redirect').addEventListener('click', function() {
