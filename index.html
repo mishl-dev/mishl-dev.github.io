@@ -5,8 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discord Profile</title>
     <style>
+        body {
+            background-image: url("your-background-image-url");
+            background-size: cover;
+            background-position: center;
+        }
+
+        button {
+            border-radius: 25px;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+        }
+
+        button:hover {
+            background-color: rgba(255, 255, 255, 1);
+        }
+
         #discord-profile {
             display: none;
+            text-align: center;
+        }
+
+        #profile-image {
+            border-radius: 50%;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -14,16 +40,14 @@
     <button id="show-profile">Show Discord Profile</button>
     <button id="redirect">Redirect to Another Website</button>
     <div id="discord-profile">
-        <img id="profile-image" src="" alt="Discord Profile">
+        <img id="profile-image" src="https://lanyard.cnrad.dev/api/1025245410224263258?theme=dark&bg=171515&borderRadius=15px&animated=true&idleMessage=PRobly%20Dying%20Idk" alt="Discord Profile">
     </div>
     <script>
         document.getElementById('show-profile').addEventListener('click', function() {
-            const profileImage = document.getElementById('Discord status');
-            profileImage.src = 'https://lanyard.cnrad.dev/api/1025245410224263258?theme=dark&bg=171515&borderRadius=15px&animated=true&idleMessage=PRobly%20Dying%20Idk';
             document.getElementById('discord-profile').style.display = 'block';
         });
 
-        document.getElementById('Chatbot commands').addEventListener('click', function() {
+        document.getElementById('redirect').addEventListener('click', function() {
             window.location.href = 'https://your-another-website-url.com';
         });
     </script>
