@@ -25,6 +25,7 @@
             margin-bottom: 20px;
             transition: all 0.3s ease;
             opacity: 1;
+            text-shadow: 0px 0px 10px white;
         }
 
         .about-me.hide {
@@ -57,35 +58,60 @@
             border-radius: 25px;
             margin-top: 20px;
         }
+
+        .show {
+            color: white;
+            font-size: 16px;
+            text-shadow: 0px 0px 10px white;
+            margin-top: 10px;
+        }
+
+        .glow {
+            animation: glow 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0px 0px 10px white;
+            }
+            to {
+                text-shadow: 0px 0px 20px white;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="about-me">
-        <h2>About Me</h2>
-        <p>Hi, I'm John Doe. I'm a software engineer and I love coding. In my free time, I enjoy playing video games and hanging out on Discord.</p>
+        <h2 class="glow">About Me</h2>
+        <p class="glow">Hi, I'm John Doe. I'm a software engineer and I love coding. In my free time, I enjoy playing video games and hanging out on Discord.</p>
     </div>
     <button id="show-profile">Show Discord Profile</button>
     <button id="redirect">Redirect to Another Website</button>
     <div id="discord-profile">
         <img id="profile-image" src="https://lanyard.cnrad.dev/api/1025245410224263258?theme=dark&bg=171515&borderRadius=15px&animated=true&idleMessage=PRobly%20Dying%20Idk" alt="Discord Profile">
     </div>
+    <p class="show">Show</p>
     <script>
         const showProfileButton = document.getElementById('show-profile');
         const discordProfile = document.getElementById('discord-profile');
         const aboutMe = document.querySelector('.about-me');
+        const showText = document.querySelector('.show');
         let showProfile = true;
         showProfileButton.addEventListener('click', function() {
             if (showProfile) {
                 discordProfile.style.display = 'block';
                 showProfileButton.textContent = 'Hide Discord Profile';
                 aboutMe.classList.add('hide');
+                showText.classList.add('glow');
                 showProfile = false;
             } else {
                 discordProfile.style.display = 'none';
                 showProfileButton.textContent = 'Show Discord Profile';
                 aboutMe.classList.remove('hide');
+                showText.classList.remove('glow');
                 showProfile = true;
             }
+            showProfileButton.classList.toggle('animated');
         });
 
         document.getElementById('redirect').addEventListener('click', function() {
