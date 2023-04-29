@@ -101,8 +101,8 @@
     <p class="show"></p>
     <script>
         const wallpaperLinks = [
-          "https://source.unsplash.com/random/1366x768/?wallpaper1",
-          "https://source.unsplash.com/random/1366x768/?wallpaper2",
+          "https://media.discordapp.net/attachments/1085616784100560966/1101600755439386694/image.png?width=415&height=455",
+          "https://images-ext-1.discordapp.net/external/kGrIWh3GxP1q1yOvSUzKSLYKrAS0tOe6EWcI7-fk-1s/https/media.tenor.com/iBf8Got1R-gAAAPo/beluga-the-cat-hakosh1307.mp4",
         ];
         const body = document.querySelector("body");
         const rand = Math.floor(Math.random() * 2) + 1; // Generate a random number between 1 and 2
@@ -110,7 +110,6 @@
           const randLink = Math.floor(Math.random() * 2); // Choose a random link from the array
           body.style.backgroundImage = `url(${wallpaperLinks[randLink]})`;
         }
-
         const showProfileButton = document.getElementById('show-profile');
         const discordProfile = document.getElementById('discord-profile');
         const aboutMe = document.querySelector('.about-me');
