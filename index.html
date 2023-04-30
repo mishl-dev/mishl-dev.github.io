@@ -94,26 +94,12 @@
         <p class="glow"> Hi, I'm Mishal - a 15-year-old coding enthusiast and Discord addict. As a self-taught programmer, I'm always up for new challenges that can sharpen my skills. you can find me hanging out on Discord and chatting with like-minded individuals. I'm constantly looking for opportunities to learn and expand my knowledge.
     </div>
     <button id="show-profile">Show Discord Profile</button>
-    <button id="redirect">Discord Bot Commands</button>
+    <button id="redirect">Check out Github</button>
     <div id="discord-profile">
         <img id="profile-image" src="https://lanyard.cnrad.dev/api/1025245410224263258?theme=dark&bg=171515&borderRadius=15px&animated=true&idleMessage=PRobly%20Dying%20Idk" alt="Discord Profile">
     </div>
     <p class="show"></p>
     <script>
-        const wallpaperLinks = [
-          "https://source.unsplash.com/random/1366x768/?wallpaper",
-          "https://media.discordapp.net/attachments/1085616784100560966/1101600755439386694/image.png?width=415&height=455",
-          "https://source.unsplash.com/random/1366x768/?wallpaper",
-          "https://source.unsplash.com/random/1366x768/?wallpaper",
-          "https://media.discordapp.net/attachments/1085616784100560966/1101852313766871131/image.png"
-          "https://source.unsplash.com/random/1366x768/?wallpaper",
-        ];
-        const body = document.querySelector("body");
-        const rand = Math.floor(Math.random() * 2) + 1; // Generate a random number between 1 and 2
-        if (rand <= 0.2) { // 10% chance
-          const randLink = Math.floor(Math.random() * 2); // Choose a random link from the array
-          body.style.backgroundImage = `url(${wallpaperLinks[randLink]})`;
-        }
         const showProfileButton = document.getElementById('show-profile');
         const discordProfile = document.getElementById('discord-profile');
         const aboutMe = document.querySelector('.about-me');
@@ -137,7 +123,7 @@
         });
 
         document.getElementById('redirect').addEventListener('click', function() {
-            window.location.href = 'https://ai-chatbot.mishal0legit.repl.co';
+            window.location.href = 'https://github.com/mishalhossin';
         });
     </script>
 </body>
