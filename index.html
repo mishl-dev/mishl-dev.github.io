@@ -86,27 +86,25 @@
                 text-shadow: 0px 0px 20px white;
             }
         }
-    .raindrop {
+    .rain {
         position: absolute;
-        left: 50px; /* Change the left position of the raindrops */
-        top: 50px; /* Change the top position of the raindrops */
-        background-color: rgba(255, 255, 255, 0.8);
-        border-radius: 50%;
-        width: 2px;
-        height: 2px;
-        animation: fall 1s ease-in-out infinite;
-    }
-    .raindrop::before,
-    .raindrop::after {
-        content: "";
-        position: absolute;
-        background-color: rgba(255, 255, 255, 0.8);
-        border-radius: 50%;
-        width: 2px;
-        height: 2px;
-        animation: fall 1s ease-in-out infinite;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -1;
     }
 
+    .raindrop {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.6); /* Adjusted opacity */
+        border-radius: 50%;
+        width: 2px;
+        height: 2px;
+        animation: fall 1s linear infinite;
+    }
+    
     @keyframes fall {
         from {
             transform: translateY(-100%) rotate(0deg);
@@ -118,6 +116,7 @@
     </style>
 </head>
 <body>
+    <div class="rain"></div>
     <div class="about-me">
         <h2 class="glow">About Me</h2>
         <p class="glow"> Hi, I'm Mishal - a 15-year-old coding enthusiast and Discord addict. As a self-taught programmer, I'm always up for new challenges that can sharpen my skills. you can find me hanging out on Discord and chatting with like-minded individuals. I'm constantly looking for opportunities to learn and expand my knowledge.
@@ -129,6 +128,20 @@
     </div>
     <p class="show"></p>
     <script>
+        const rainContainer = document.querySelector('.rain');
+        const numberOfRaindrops = 200;
+
+        for (let i = 0; i < numberOfRaindrops; i++) {
+            const raindrop = document.createElement('div');
+            raindrop.classList.add('raindrop');
+
+            // Randomize position and animation duration
+            raindrop.style.left = Math.random() * 100 + 'vw';
+            raindrop.style.top = Math.random() * 100 + 'vh';
+            raindrop.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
+
+            rainContainer.appendChild(raindrop);
+        }
         const showProfileButton = document.getElementById('show-profile');
         const discordProfile = document.getElementById('discord-profile');
         const aboutMe = document.querySelector('.about-me');
