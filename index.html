@@ -86,33 +86,68 @@
                 text-shadow: 0px 0px 20px white;
             }
         }
-    .rain {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        z-index: -1;
-    }
+        .rain {
+          position: absolute;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 2;
+        }
 
-    .raindrop {
-        position: absolute;
-        background-color: rgba(255, 255, 255, 0.6);
-        border-radius: 50%;
-        width: 2px;
-        height: 5px;
-        animation: fall 8s linear infinite;
-    }
-    
-    @keyframes fall {
-        from {
-            transform: translateY(-100%) rotate(0deg);
+        .rain.back-row {
+          display: none;
+          z-index: 1;
+          bottom: 60px;
+          opacity: 0.5;
         }
-        to {
-            transform: translateY(100%) rotate(0deg);
+
+        body.back-row-toggle .rain.back-row {
+          display: block;
         }
-    }
+
+        .drop {
+          position: absolute;
+          bottom: 100%;
+          width: 15px;
+          height: 120px;
+          pointer-events: none;
+          animation: drop 0.5s linear infinite;
+        }
+
+        @keyframes drop {
+          0% {
+            transform: translateY(0vh);
+          }
+          75% {
+            transform: translateY(90vh);
+          }
+          100% {
+            transform: translateY(90vh);
+          }
+        }
+
+        .stem {
+          width: 1px;
+          height: 60%;
+          margin-left: 7px;
+          background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.25));
+          animation: stem 0.5s linear infinite;
+        }
+
+        @keyframes stem {
+          0% {
+            opacity: 1;
+          }
+          65% {
+            opacity: 1;
+          }
+          75% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 0;
+          }
+        }
 </head>
 <body>
     <div class="rain"></div>
@@ -127,20 +162,6 @@
     </div>
     <p class="show"></p>
     <script>
-        const rainContainer = document.querySelector('.rain');
-        const numberOfRaindrops = 200;
-
-        for (let i = 0; i < numberOfRaindrops; i++) {
-            const raindrop = document.createElement('div');
-            raindrop.classList.add('raindrop');
-
-            // Randomize position and animation duration
-            raindrop.style.left = Math.random() * 100 + 'vw';
-            raindrop.style.top = Math.random() * 100 + 'vh';
-            raindrop.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
-
-            rainContainer.appendChild(raindrop);
-        }
         const showProfileButton = document.getElementById('show-profile');
         const discordProfile = document.getElementById('discord-profile');
         const aboutMe = document.querySelector('.about-me');
