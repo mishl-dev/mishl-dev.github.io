@@ -86,6 +86,35 @@
                 text-shadow: 0px 0px 20px white;
             }
         }
+    .raindrop {
+        position: absolute;
+        left: 50px; /* Change the left position of the raindrops */
+        top: 50px; /* Change the top position of the raindrops */
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        width: 2px;
+        height: 2px;
+        animation: fall 1s ease-in-out infinite;
+    }
+    .raindrop::before,
+    .raindrop::after {
+        content: "";
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        width: 2px;
+        height: 2px;
+        animation: fall 1s ease-in-out infinite;
+    }
+
+    @keyframes fall {
+        from {
+            transform: translateY(-100%) rotate(0deg);
+        }
+        to {
+            transform: translateY(100%) rotate(0deg);
+        }
+    }
     </style>
 </head>
 <body>
@@ -93,6 +122,15 @@
         <h2 class="glow">About Me</h2>
         <p class="glow"> Hi, I'm Mishal - a 15-year-old coding enthusiast and Discord addict. As a self-taught programmer, I'm always up for new challenges that can sharpen my skills. you can find me hanging out on Discord and chatting with like-minded individuals. I'm constantly looking for opportunities to learn and expand my knowledge.
     </div>
+    <div class="raindrop"></div>
+    <div class="raindrop"></div>
+    <div class="raindrop"></div>
+    <div class="raindrop"></div>
+    <div class="raindrop"></div>
+    <div class="raindrop"></div>
+    <div class="raindrop"></div>
+    <div class="raindrop"></div>
+    <div class="raindrop"></div>
     <button id="show-profile">Show Discord Profile</button>
     <button id="redirect">Check out Github</button>
     <div id="discord-profile">
