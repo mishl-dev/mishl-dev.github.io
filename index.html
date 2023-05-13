@@ -90,7 +90,7 @@
     </style>
 </head>
 <body>
-    <audio id="backgroundMusic" src="https://cdn.jsdelivr.net/gh/mishalhossin/mishalhossin.github.io
+    <audio id="audioPlayer" src="https://cdn.jsdelivr.net/gh/mishalhossin/mishalhossin.github.io
 @main/BIGSHOT.mp3" autoplay loop hidden muted>
     </audio>
     <div class="about-me">
@@ -104,14 +104,11 @@
     </div>
     <p class="show"></p>
     <script>
-        document.body.addEventListener("click", function() {
-           var backgroundMusic = document.getElementById("backgroundMusic");
-           if (backgroundMusic.muted) {
-              setTimeout(function() {
-                 backgroundMusic.muted = false;
-              }, 2000); // Unmute after 2 seconds
-           }
-        });
+        // Add the playAudio function
+        function playAudio() {
+            const audioElement = document.getElementById("audioPlayer");
+            audioElement.play();
+        }
         const showProfileButton = document.getElementById('show-profile');
         const discordProfile = document.getElementById('discord-profile');
         const aboutMe = document.querySelector('.about-me');
