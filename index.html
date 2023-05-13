@@ -90,9 +90,9 @@
     </style>
 </head>
 <body>
-    <audio id="audioPlayer" src="https://cdn.jsdelivr.net/gh/mishalhossin/mishalhossin.github.io
-@main/BIGSHOT.mp3" controls></audio>
-    <button id="playButton">Play</button>
+    <audio id="backgroundMusic" src="https://cdn.jsdelivr.net/gh/mishalhossin/mishalhossin.github.io
+@main/BIGSHOT.mp3" autoplay loop hidden muted>
+    </audio>
     <div class="about-me">
         <h2 class="glow">About Me</h2>
         <p class="glow"> Hi, I'm Mishal - a 15-year-old coding enthusiast and Discord addict. As a self-taught programmer, I'm always up for new challenges that can sharpen my skills. you can find me hanging out on Discord and chatting with like-minded individuals. I'm constantly looking for opportunities to learn and expand my knowledge.
@@ -104,6 +104,12 @@
     </div>
     <p class="show"></p>
     <script>
+         document.body.addEventListener("click", function() {
+            var backgroundMusic = document.getElementById("backgroundMusic");
+            if (backgroundMusic.muted) {
+               backgroundMusic.muted = false;
+            }
+         });
         const showProfileButton = document.getElementById('show-profile');
         const discordProfile = document.getElementById('discord-profile');
         const aboutMe = document.querySelector('.about-me');
@@ -129,16 +135,6 @@
         document.getElementById('redirect').addEventListener('click', function() {
             window.location.href = 'https://github.com/mishalhossin';
         });
-
-        // Add the playAudio function
-        function playAudio() {
-            const audioElement = document.getElementById("audioPlayer");
-            audioElement.play();
-        }
-
-        // Add the event listener for the play button
-        const playButton = document.getElementById("playButton");
-        playButton.addEventListener("click", playAudio);
     </script>
 </body>
 </html>
