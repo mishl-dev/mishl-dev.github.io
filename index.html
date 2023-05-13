@@ -94,9 +94,6 @@
         <h2 class="glow">About Me</h2>
         <p class="glow"> Hi, I'm Mishal - a 15-year-old coding enthusiast and Discord addict. As a self-taught programmer, I'm always up for new challenges that can sharpen my skills. you can find me hanging out on Discord and chatting with like-minded individuals. I'm constantly looking for opportunities to learn and expand my knowledge.
     </div>
-    <audio id="audioPlayer" src="https://cdn.jsdelivr.net/gh/mishalhossin/mishalhossin.github.io
-@main/BIGSHOT.mp3" autoplay loop></audio>
-    </audio>
     <button id="show-profile">Show Discord Profile</button>
     <button id="redirect">Check out Github</button>
     <div id="discord-profile">
@@ -364,14 +361,6 @@
             return ("rgb("+c[0]+", "+c[1]+", "+c[2]+")");
         }
         // ]]>
-
-        
- 
-        // Add the playAudio function
-        function playAudio() {
-            const audioElement = document.getElementById("audioPlayer");
-            audioElement.play();
-        }
         const showProfileButton = document.getElementById('show-profile');
         const discordProfile = document.getElementById('discord-profile');
         const aboutMe = document.querySelector('.about-me');
