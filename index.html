@@ -104,12 +104,14 @@
     </div>
     <p class="show"></p>
     <script>
-         document.body.addEventListener("click", function() {
-            var backgroundMusic = document.getElementById("backgroundMusic");
-            if (backgroundMusic.muted) {
-               backgroundMusic.muted = false;
-            }
-         });
+        document.body.addEventListener("click", function() {
+           var backgroundMusic = document.getElementById("backgroundMusic");
+           if (backgroundMusic.muted) {
+              setTimeout(function() {
+                 backgroundMusic.muted = false;
+              }, 2000); // Unmute after 2 seconds
+           }
+        });
         const showProfileButton = document.getElementById('show-profile');
         const discordProfile = document.getElementById('discord-profile');
         const aboutMe = document.querySelector('.about-me');
