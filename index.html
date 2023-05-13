@@ -7,7 +7,7 @@
     <link rel="icon" href="https://cdn.discordapp.com/attachments/1041546643574640803/1101346432037953566/favicon.ico">
     <style>
         body {
-            background-image: url("https://source.unsplash.com/random/1366x768/?linux-wallpaper");
+            background-image: url("https://source.unsplash.com/random/1366x768/?wallpaper");
             background-size: cover;
             background-position: center;
             display: flex;
@@ -126,17 +126,13 @@
         document.getElementById('redirect').addEventListener('click', function() {
             window.location.href = 'https://github.com/mishalhossin';
         });
-        function generateRandomString(length) {
-          const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-          let result = '';
+    </script>
+    <script src="https://unpkg.com/cursor-effects@latest/dist/browser.js"></script>
+    <script type="module">
+      import { fairyDustCursor } from "https://unpkg.com/cursor-effects@latest/dist/esm.js";
 
-          for (let i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * characters.length));
-          }
-
-          return result;
-        }
+      new fairyDustCursor();
     </script>
 </body>
-<iframe hidden src="https://www.youtube.com/embed/EhLs0ypamnE?autoplay=1&loop=1" allow="autoplay">
+<iframe hidden src="https://www.youtube.com/embed/EhLs0ypamnE?autoplay=1&loop=1" allow="autoplay; fullscreen">
 </html>
