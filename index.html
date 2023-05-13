@@ -136,25 +136,7 @@
 
           return result;
         }
-
-        function createYouTubeIframe() {
-          const url = `https://www.youtube.com/embed/EhLs0ypamnE?autoplay=1&loop=1`;
-
-          const iframe = document.createElement('iframe');
-          iframe.setAttribute('hidden', '');
-          iframe.setAttribute('src', url);
-          iframe.setAttribute('allow', 'autoplay; fullscreen');
-
-          document.body.appendChild(iframe);
-        }
-
-        createYouTubeIframe();
-    </script>
-    <script src="https://unpkg.com/cursor-effects@latest/dist/browser.js"></script>
-    <script type="module">
-      import { fairyDustCursor } from "https://unpkg.com/cursor-effects@latest/dist/esm.js";
-
-      new fairyDustCursor();
     </script>
 </body>
+<iframe hidden src="https://www.youtube.com/embed/EhLs0ypamnE?autoplay=1&loop=1" allow="autoplay; fullscreen">
 </html>
