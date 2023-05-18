@@ -104,8 +104,9 @@
         document.addEventListener('mousemove', (e) => {
           const x = e.clientX / window.innerWidth;
           const y = e.clientY / window.innerHeight;
-          document.body.style.backgroundPosition = `${x * 100}% ${y * 100}%`;
+          document.body.style.backgroundPosition = `${x * 10}% ${y * 10}%`;
         });
+        
         const showProfileButton = document.getElementById('show-profile');
         const discordProfile = document.getElementById('discord-profile');
         const aboutMe = document.querySelector('.about-me');
