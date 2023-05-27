@@ -1,144 +1,133 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mishal</title>
-    <link rel="icon" href="https://cdn.discordapp.com/attachments/1041546643574640803/1101346432037953566/favicon.ico">
-    <style>
-        body {
-            background-image: url("https://source.unsplash.com/random/1366x768/?wallpaper");
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-attachment: fixed;
-            overflow: hidden; /* Added this line to make the page unscrollable */
-        }
-        body::-webkit-scrollbar {
-            display: none; /* for Chrome, Safari, and Opera */
-        }        
-        .about-me {
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            padding: 20px;
-            color: white;
-            box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-            opacity: 1;
-            text-shadow: 0px 0px 10px white;
-            max-width: 55%; /* Limit the width of the box */
-            margin-left: auto; /* Center the box horizontally */
-            margin-right: auto; /* Center the box horizontally */
-        }
+  <title>Mishal</title>
+  <link rel="icon" type="image/x-icon" href="https://cdn.discordapp.com/attachments/1041546643574640803/1111844399492636693/favicon.ico">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url('https://cdn.discordapp.com/attachments/1041546643574640803/1111829548175208529/iqfYwkm.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
 
-        .about-me.hide {
-            opacity: 0;
-            pointer-events: none;
-        }
+    .card {
+      opacity: 0;
+      width: 22em;
+      height: 30em;
+      background: #171717;
+      transition: opacity 1s ease-in-out;
+      clip-path: polygon(30px 0%, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0% 30px);
+      border-top-right-radius: 20px;
+      border-bottom-left-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-        button {
-            border-radius: 25px;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            opacity: 0.9;
-            transition: all 0.8s ease;
-        }
+    .card span {
+      font-weight: bold;
+      color: white;
+      text-align: center;
+      display: block;
+      font-size: 1em;
+      margin-top: 1em;
+    }
 
-        button:hover {
-            background-color: rgba(255, 255, 255, 1);
-        }
+    .card .info {
+      font-weight: 400;
+      color: white;
+      display: block;
+      text-align: center;
+      font-size: 0.9em;
+      margin: 1em;
+    }
 
-        #discord-profile {
-            display: none;
-            text-align: center;
-        }
+    .card .img {
+      width: 8em;
+      height: 8em;
+      background: white;
+      border-radius: 50%;
+      margin-top: 2em;
+      background-image: url('https://cdn.discordapp.com/attachments/1041546643574640803/1111827595026251776/97f7f00d7a1233637cc0e8fbaed4d11d.jpg');
+      background-size: cover;
+    }
 
-        #profile-image {
-            border-radius: 25px;
-            margin-top: 20px;
-        }
+    .card .img-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+    }
 
-        .show {
-            color: white;
-            font-size: 16px;
-            text-shadow: 0px 0px 10px white;
-            margin-top: 10px;
-        }
+    .card .share {
+      margin-top: 1em;
+      display: flex;
+      justify-content: center;
+      gap: 1em;
+    }
 
-        .glow {
-            animation: glow 1s ease-in-out infinite alternate;
-            font-family: Arial, sans-serif;
-        }
+    .card a {
+      color: white;
+      transition: .4s ease-in-out;
+    }
 
-        @keyframes glow {
-            from {
-                text-shadow: 0px 0px 10px white;
-            }
-            to {
-                text-shadow: 0px 0px 20px white;
-            }
-        }
-    </style>
+    .card a:hover {
+      color: red;
+    }
+
+    .card button {
+      padding: 1em 2em;
+      display: block;
+      margin: auto;
+      border-radius: 25px;
+      border: none;
+      font-weight: bold;
+      background: #ffffff;
+      color: rgb(0, 0, 0);
+      transition: .4s ease-in-out;
+      margin-bottom: 1em;
+    }
+
+    .card button:hover {
+      background: red;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <div class="about-me">
-        <h2 class="glow">About Me</h2>
-        <p class="glow"> Hey, I'm Mishal a 15-year-old coding nerd 🤓 and total Discord addict. I'm basically the human version of "404 error: social life not found." I love teaching myself how to code and I'm always down for new challenges to level up my skills. You'll usually find me chilling on Discord. So, slide into my DMs on Discord and let's vibe together!
+  <div class="card">
+    <div class="img-container">
+      <div class="img"></div>
     </div>
-    <button id="show-profile">Show Discord Profile</button>
-    <button id="redirect">Check out Github</button>
-    <div id="discord-profile">
-        <img id="profile-image" src="https://lanyard.cnrad.dev/api/1025245410224263258?theme=dark&bg=171515&borderRadius=15px&animated=true&idleMessage=PRobly%20Dying%20Idk" alt="Discord Profile">
+    <span>About Me</span>
+    <p class="info">Hey, I'm Mishal, a 15-year-old coding nerd and total Discord addict. I'm basically the human version of "404 error: social life not found." I love teaching myself how to code and I'm always down for new challenges to level up my skills. You'll usually find me chilling on Discord. So, slide into my DMs on Discord and let's vibe together!</p>
+    <div class="share">
+      <a href="https://github.com/mishalhossin"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.58.82-2.14-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.03 2.2-.82 2.2-.82.45 1.1.16 1.91.08 2.11.51.56.82 1.27.82 2.14 0 3.07-1.87 3.75-3.65 3.95 .29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.14.46.55.38C13.71 14.53 16 11.54 16 8c0-4.42-3.58-8-8-8z"/>
+      </svg></a>
     </div>
-    <p class="show"></p>
-    <script>
-        document.addEventListener('mousemove', (e) => {
-          const x = e.clientX / window.innerWidth;
-          const y = e.clientY / window.innerHeight;
-          document.body.style.backgroundPosition = `${x * 10}% ${y * 10}%`;
-        });
-        
-        const showProfileButton = document.getElementById('show-profile');
-        const discordProfile = document.getElementById('discord-profile');
-        const aboutMe = document.querySelector('.about-me');
-        const showText = document.querySelector('.show');
-        let showProfile = true;
-        showProfileButton.addEventListener('click', function() {
-            if (showProfile) {
-                discordProfile.style.display = 'block';
-                showProfileButton.textContent = 'Hide Discord Profile';
-                aboutMe.classList.add('hide');
-                showText.classList.add('glow');
-                showProfile = false;
-            } else {
-                discordProfile.style.display = 'none';
-                showProfileButton.textContent = 'Show Discord Profile';
-                aboutMe.classList.remove('hide');
-                showText.classList.remove('glow');
-                showProfile = true;
-            }
-            showProfileButton.classList.toggle('animated');
-        });
+    <button onclick="location.href='https://discord.com/users/1025245410224263258';">Contact Me</button>
+  </div>
 
-        document.getElementById('redirect').addEventListener('click', function() {
-            window.location.href = 'https://github.com/mishalhossin';
-        });
-    </script>
-    <script src="https://unpkg.com/cursor-effects@latest/dist/browser.js"></script>
-    <script type="module">
-      import { fairyDustCursor } from "https://unpkg.com/cursor-effects@latest/dist/esm.js";
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const card = document.querySelector('.card');
+      card.style.opacity = '1';
+    });
+  </script>
+  <script src="https://unpkg.com/cursor-effects@latest/dist/browser.js"></script>
+  <script type="module">
+    import { fairyDustCursor } from "https://unpkg.com/cursor-effects@latest/dist/esm.js";
 
-      new fairyDustCursor();
-    </script>
+    new fairyDustCursor();
+  </script>
 </body>
 <iframe hidden src="https://www.youtube.com/embed/EhLs0ypamnE?autoplay=1&loop=1" allow="autoplay; fullscreen">
 </html>
