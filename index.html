@@ -119,7 +119,7 @@
         const typingDelay = 20;
         const showText = document.querySelector('.typing-text');
         let charIndex = 0;
-        
+
         function typeText() {
           if (charIndex < typingText.length) {
             showText.textContent += typingText.charAt(charIndex);
@@ -130,14 +130,14 @@
             removeCursorEffect();
           }
         }
-        
+
         function removeCursorEffect() {
-          const cursorEffectScript = document.querySelector('script[src^="https://unpkg.com/cursor-effects"]');
+          const cursorEffectScript = document.querySelector('script[type="module"]');
           cursorEffectScript.remove();
         }
-        
+
         typeText();
-        
+
         document.getElementById('redirect').addEventListener('click', function() {
           window.location.href = 'https://github.com/mishalhossin';
         });
