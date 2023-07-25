@@ -142,8 +142,10 @@
           window.location.href = 'https://github.com/mishalhossin';
         });
     </script>
-    <script src="https://unpkg.com/cursor-effects@latest/dist/browser.js">
-        new cursoreffects.followingDotCursor({ color: ["#260226a6"] });
+    <script type="module">
+      import { followingDotCursor } from "https://unpkg.com/cursor-effects@latest/dist/esm.js";
+    
+      new followingDotCursor({ color: ["#260226a6"] });
     </script>
 </body>
 </html>
