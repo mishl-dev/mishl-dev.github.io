@@ -9,7 +9,7 @@
         body {
             background-image: url("https://cdn.discordapp.com/attachments/1025493152301326356/1133375043838160946/Banner.png");
             background-size: cover;
-            background-position: center;
+            background-position: center center;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -39,6 +39,11 @@
         .about-me.hide {
             opacity: 0;
             pointer-events: none;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
         }
 
         button {
@@ -92,25 +97,34 @@
 <body>
     <div class="about-me">
         <h2 class="glow">About Me</h2>
-        <p class="glow"> Hey, I'm Mishal a 15-year-old coding nerd 🤓 and total Discord addict. I'm basically the human version of "404 error: social life not found." I love teaching myself how to code and I'm always down for new challenges to level up my skills. You'll usually find me chilling on Discord. So, slide into my DMs on Discord and let's vibe together!
+        <p class="glow"> Hey, I'm Mishal a 15-year-old coding nerd and total Discord addict. I'm basically the human version of "404 error: social life not found." I love teaching myself how to code and I'm always down for new challenges to level up my skills. You'll usually find me chilling on Discord. So, slide into my DMs on Discord and let's vibe together!
     </div>
-    <button id="show-profile">Show Discord Profile</button>
-    <button id="redirect">Check out Github</button>
+    <div class="button-container">
+        <button id="show-profile">Show Discord Profile</button>
+        <button id="redirect">Check out Github</button>
+    </div>
     <div id="discord-profile">
         <img id="profile-image" src="https://lanyard.cnrad.dev/api/1025245410224263258?theme=dark&bg=171515&borderRadius=15px&animated=true&idleMessage=PRobly%20Dying%20Idk" alt="Discord Profile">
     </div>
     <p class="show"></p>
     <script>
-        document.addEventListener('mousemove', (e) => {
-          const x = e.clientX / window.innerWidth;
-          const y = e.clientY / window.innerHeight;
-          document.body.style.backgroundPosition = `${x * 10}% ${y * 10}%`;
-        });
-        
+        const showText = document.querySelector('.show');
+        const text = "Additional information goes here."; // Change the text as needed
+        let index = 0;
+
+        function typeText() {
+            if (index < text.length) {
+                showText.textContent += text.charAt(index);
+                index++;
+                setTimeout(typeText, 50); // Adjust the typing speed (in milliseconds) as desired
+            }
+        }
+
+        typeText();
+
         const showProfileButton = document.getElementById('show-profile');
         const discordProfile = document.getElementById('discord-profile');
         const aboutMe = document.querySelector('.about-me');
-        const showText = document.querySelector('.show');
         let showProfile = true;
         showProfileButton.addEventListener('click', function() {
             if (showProfile) {
@@ -135,10 +149,9 @@
     </script>
     <script src="https://unpkg.com/cursor-effects@latest/dist/browser.js"></script>
     <script type="module">
-      import { fairyDustCursor } from "https://unpkg.com/cursor-effects@latest/dist/esm.js";
+        import { fairyDustCursor } from "https://unpkg.com/cursor-effects@latest/dist/esm.js";
 
-      new fairyDustCursor();
+        new fairyDustCursor();
     </script>
 </body>
-<iframe hidden src="https://www.youtube.com/embed/EhLs0ypamnE?autoplay=1&loop=1" allow="autoplay; fullscreen">
 </html>
