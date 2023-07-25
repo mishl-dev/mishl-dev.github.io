@@ -103,6 +103,44 @@
                 opacity: 1;
             }
         }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-screen p {
+            color: white;
+            font-size: 24px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -113,6 +151,10 @@
     <div class="button-container">
         <button id="redirect">Check out GitHub</button>
         <button onclick="window.open('https://www.patreon.com/mishalhossin', '_blank')">Support me on Patreon</button>
+    </div>
+    <div class="loading-screen">
+        <div class="loader"></div>
+        <p>Loading...</p>
     </div>
     <script>
         const typingText = `I'm like the embodiment of "No social life" I totally find my happy place in the coding and tech world. It's where I feel at ease, always diving headfirst into the quest for knowledge and getting better at what I do. Teaching myself how to code has become my jam, and I'm forever on the lookout for fresh challenges that let me level up my skills. I just can't get enough of it! 🚀`;
@@ -128,12 +170,24 @@
           } else {
             showText.classList.add('blink-cursor');
             removeCursorEffect();
+            showLoadingScreen();
           }
         }
 
         function removeCursorEffect() {
           const cursorEffectScript = document.querySelector('script[type="module"]');
           cursorEffectScript.remove();
+        }
+
+        function showLoadingScreen() {
+          const loadingScreen = document.querySelector('.loading-screen');
+          loadingScreen.style.display = 'flex';
+          setTimeout(removeLoadingScreen, 3000); // Remove the loading screen after 3 seconds (adjust as needed)
+        }
+
+        function removeLoadingScreen() {
+          const loadingScreen = document.querySelector('.loading-screen');
+          loadingScreen.style.display = 'none';
         }
 
         typeText();
