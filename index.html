@@ -79,12 +79,28 @@
             font-family: Arial, sans-serif;
         }
 
+        .typing-text::after {
+            content: " █"; 
+            display: inline-block;
+            animation: blink 0.7s infinite;
+            color: purple;
+        }
+
         @keyframes glow {
             from {
                 text-shadow: 0px 0px 10px white;
             }
             to {
                 text-shadow: 0px 0px 20px white;
+            }
+        }
+
+        @keyframes blink {
+            from, to {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
             }
         }
     </style>
@@ -109,6 +125,8 @@
                 showText.textContent += typingText.charAt(charIndex);
                 charIndex++;
                 setTimeout(typeText, typingDelay);
+            } else {
+                showText.classList.add('blink-cursor');
             }
         }
 
