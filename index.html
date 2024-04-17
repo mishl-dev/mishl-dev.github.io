@@ -107,46 +107,6 @@
     </style>
 </head>
 <body>
-    <div class="about-me">
-        <h2 class="glow">About Me</h2>
-        <p>Hey, I'm Mishal, a 15-year-old coding nerd and total Discord addict. <span class="typing-text"></span></p>
-    </div>
-    <div class="button-container">
-        <button id="redirect">Check out GitHub</button>
-        <button onclick="window.open('https://www.patreon.com/mishalhossin', '_blank')">Support me on Patreon</button>
-    </div>
-    <script>
-        const typingText = `I'm like the embodiment of "No social life" I totally find my happy place in the coding and tech world. It's where I feel at ease, always diving headfirst into the quest for knowledge and getting better at what I do. Teaching myself how to code has become my jam, and I'm forever on the lookout for fresh challenges that let me level up my skills. I just can't get enough of it! 🚀`;
-        const typingDelay = 20;
-        const showText = document.querySelector('.typing-text');
-        let charIndex = 0;
-
-        function typeText() {
-          if (charIndex < typingText.length) {
-            showText.textContent += typingText.charAt(charIndex);
-            charIndex++;
-            setTimeout(typeText, typingDelay);
-          } else {
-            showText.classList.add('blink-cursor');
-            removeCursorEffect();
-          }
-        }
-
-        function removeCursorEffect() {
-          const cursorEffectScript = document.querySelector('script[type="module"]');
-          cursorEffectScript.remove();
-        }
-
-        typeText();
-
-        document.getElementById('redirect').addEventListener('click', function() {
-          window.location.href = 'https://github.com/mishalhossin';
-        });
-    </script>
-    <script type="module">
-      import { followingDotCursor } from "https://unpkg.com/cursor-effects@latest/dist/esm.js";
-    
-      new followingDotCursor({ color: ["#50006e"] });
-    </script>
+    <div>Under construction</div>
 </body>
 </html>
