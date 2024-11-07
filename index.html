@@ -1,112 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mishal</title>
-    <link rel="icon" href="https://cdn.discordapp.com/attachments/1025493152301326356/1133375258133528626/Icon.png">
-    <style>
-        body {
-            background-image: url("https://cdn.discordapp.com/attachments/1025493152301326356/1133375043838160946/Banner.png");
-            background-size: cover;
-            background-position: center center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-attachment: fixed;
-            overflow: hidden;
-        }
-        body::-webkit-scrollbar {
-            display: none;
-        }        
-        .about-me {
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            padding: 20px;
-            color: white;
-            box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-            opacity: 1;
-            text-shadow: 0px 0px 10px white;
-            max-width: 55%; /* Limit the width of the box */
-            margin-left: auto; /* Center the box horizontally */
-            margin-right: auto; /* Center the box horizontally */
-        }
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="3; url=https://mishl.dev/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting...</title>
+  <style>
+    /* Basic reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        .about-me.hide {
-            opacity: 0;
-            pointer-events: none;
-        }
+    /* Full-screen container */
+    body, html {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
 
-        .button-container {
-            display: flex;
-            justify-content: center;
-        }
+    .loader {
+      font-size: 24px;
+      letter-spacing: 3px;
+      animation: fadeIn 1.5s ease-in-out infinite alternate;
+    }
 
-        button {
-            border-radius: 25px;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            opacity: 0.9;
-            transition: all 0.8s ease;
-        }
-
-        button:hover {
-            background-color: rgba(255, 255, 255, 1);
-        }
-
-        #profile-image {
-            border-radius: 25px;
-            margin-top: 20px;
-        }
-
-        .show {
-            color: white;
-            font-size: 16px;
-            text-shadow: 0px 0px 10px white;
-            margin-top: 10px;
-        }
-
-        .glow {
-            animation: glow 1s ease-in-out infinite alternate;
-            font-family: Arial, sans-serif;
-        }
-
-        .typing-text::after {
-            content: "｜"; 
-            display: inline-block;
-            animation: blink 0.6s infinite;
-            color: white;
-            font-family: Arial, sans-serif;
-        }
-
-        @keyframes glow {
-            from {
-                text-shadow: 0px 0px 10px white;
-            }
-            to {
-                text-shadow: 0px 0px 20px white;
-            }
-        }
-
-        @keyframes blink {
-            from, to {
-                opacity: 0;
-            }
-            50% {
-                opacity: 1;
-            }
-        }
-    </style>
+    /* Fade-in effect */
+    @keyframes fadeIn {
+      from { opacity: 0.2; }
+      to { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
-    <div>Under construction</div>
+  <div class="loader">Redirecting to Mishl.dev...</div>
 </body>
 </html>
