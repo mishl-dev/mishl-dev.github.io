@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Text Obfuscator</title>
+    <style>
+        :root {
+            --primary-color: #7289DA;
+            --primary-hover: #5f73bc;
+            --secondary-color: #43b581;
+            --secondary-hover: #389969;
+            --bg-dark: #2C2F33;
+            --bg-darker: #23272A;
+            --bg-light: #36393F;
+            --text-light: #FFFFFF;
+            --text-muted: #99AAB5;
+            --text-dark: #333333;
+            --border-radius: 8px;
+            --accent-color: #FF7043;
+            --shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: all 0.2s ease;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-darker);
+            color: var(--text-light);
+        }
+        
+        h1, h2, h3, h4 {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .container {
+            background-color: var(--bg-dark);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 1px solid #3a3f45;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            font-size: 16px;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            resize: vertical;
+            font-family: 'Segoe UI', sans-serif;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(114, 137, 218, 0.2);
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .output-container {
+            margin-top: 30px;
+        }
+        
+        .info {
+            margin: 25px 0;
+            padding: 20px;
+            background-color: rgba(33, 150, 243, 0.1);
+            border-left: 6px solid var(--primary-color);
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        
+        .settings {
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+            margin: 15px 0 20px 0;
+        }
+        
+        .copy-button {
+            background-color: var(--secondary-color);
+            margin-left: 10px;
+        }
+        
+        .copy-button:hover {
+            background-color: var(--secondary-hover);
+        }
+        
+        .unicode-info {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #3a3f45;
+        }
+        
+        th {
+            background-color: rgba(114, 137, 218, 0.2);
+            color: var(--text-light);
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background-color: rgba(114, 137, 218, 0.05);
+        }
+        
+        .stats {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stats ul {
+            list-style-type: none;
+            padding-left: 10px;
+        }
+        
+        .stats li {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .stats li::before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .slider-container {
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #3a3f45;
+            outline: none;
+            opacity: 0.9;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+        
+        .slider:hover {
+            opacity: 1;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .slider-value {
+            display: inline-block;
+            position: relative;
+            width: 60px;
+            color: var(--text-light);
+            text-align: center;
+            font-weight: bold;
+            margin-left: 15px;
+            background: var(--primary-color);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            padding-left: 35px;
+            user-select: none;
+        }
+        
+        .checkbox-label input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: var(--bg-darker);
+            border-radius: 4px;
+            border: 1px solid #3a3f45;
+        }
+        
+        .checkbox-label:hover input ~ .checkmark {
+            background-color: #3a3f45;
+        }
+        
+        .checkbox-label input:checked ~ .checkmark {
+            background-color: var(--primary-color);
+        }
+        
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+        
+        .checkbox-label input:checked ~ .checkmark:after {
+            display: block;
+        }
+        
+        .checkbox-label .checkmark:after {
+            left: 7px;
+            top: 3px;
+            width: 4px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .radio-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            padding-left: 35px;
+            user-select: none;
+        }
+        
+        .radio-label input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        
+        .radiomark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: var(--bg-darker);
+            border-radius: 50%;
+            border: 1px solid #3a3f45;
+        }
+        
+        .radio-label:hover input ~ .radiomark {
+            background-color: #3a3f45;
+        }
+        
+        .radio-label input:checked ~ .radiomark {
+            background-color: var(--primary-color);
+        }
+        
+        .radiomark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+        
+        .radio-label input:checked ~ .radiomark:after {
+            display: block;
+        }
+        
+        .radio-label .radiomark:after {
+            top: 6px;
+            left: 6px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        #clearButton {
+            background-color: #5865F2;
+        }
+        
+        #clearButton:hover {
+            background-color: #4752c4;
+        }
+        
+        #obfuscateButton {
+            background-color: var(--secondary-color);
+        }
+        
+        #obfuscateButton:hover {
+            background-color: var(--secondary-hover);
+        }
+        
+        .header-with-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .intensity-display {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 5px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Advanced Text Obfuscator</h1>
+        
+        <div class="info">
+            <p>This tool inserts various invisible Unicode characters into your text, making it potentially harder for AI models to process while remaining readable to humans.</p>
+        </div>
+        
+        <div class="section settings">
+            <div class="settings-header">
+                <h3>Obfuscation Settings</h3>
+            </div>
+            
+            <label for="intensity">Insertion intensity:</label>
+            <div class="slider-container">
+                <input type="range" min="0" max="100" value="50" class="slider" id="intensitySlider">
+                <div class="intensity-display">
+                    <span>Low</span>
+                    <span class="slider-value" id="intensityValue">50%</span>
+                    <span>High</span>
+                </div>
+            </div>
+            
+            <label for="placement">Placement method:</label>
+            <div class="radio-group">
+                <label class="radio-label">
+                    <input type="radio" name="placement" value="between-chars" checked>
+                    <span class="radiomark"></span>
+                    Between characters
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="placement" value="around-words">
+                    <span class="radiomark"></span>
+                    Around words
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="placement" value="random">
+                    <span class="radiomark"></span>
+                    Random
+                </label>
+            </div>
+            
+            <label>Choose invisible characters to use:</label>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" class="unicode-char" value="200B" checked>
+                    <span class="checkmark"></span>
+                    Zero Width Space <span class="unicode-info">(U+200B)</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" class="unicode-char" value="200C" checked>
+                    <span class="checkmark"></span>
+                    Zero Width Non-Joiner <span class="unicode-info">(U+200C)</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" class="unicode-char" value="200D" checked>
+                    <span class="checkmark"></span>
+                    Zero Width Joiner <span class="unicode-info">(U+200D)</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" class="unicode-char" value="2060" checked>
+                    <span class="checkmark"></span>
+                    Word Joiner <span class="unicode-info">(U+2060)</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" class="unicode-char" value="FEFF" checked>
+                    <span class="checkmark"></span>
+                    Zero Width No-Break Space <span class="unicode-info">(U+FEFF)</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" class="unicode-char" value="061C" checked>
+                    <span class="checkmark"></span>
+                    Arabic Letter Mark <span class="unicode-info">(U+061C)</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" class="unicode-char" value="2063" checked>
+                    <span class="checkmark"></span>
+                    Invisible Separator <span class="unicode-info">(U+2063)</span>
+                </label>
+            </div>
+            
+            <label class="checkbox-label">
+                <input type="checkbox" id="useRandom" checked>
+                <span class="checkmark"></span>
+                Use random invisible characters (recommended)
+            </label>
+        </div>
+        
+        <div class="section">
+            <h3>Input Text</h3>
+            <textarea id="inputText" placeholder="Enter your text here..."></textarea>
+            <div class="button-group">
+                <button id="obfuscateButton">Obfuscate Text</button>
+                <button id="clearButton">Clear</button>
+            </div>
+        </div>
+        
+        <div class="section output-container">
+            <div class="header-with-button">
+                <h3>Obfuscated Text</h3>
+                <button id="copyButton" class="copy-button">Copy to Clipboard</button>
+            </div>
+            <textarea id="outputText" placeholder="Obfuscated text will appear here..." readonly></textarea>
+            
+            <div class="stats">
+                <h4>Statistics</h4>
+                <div id="statsOutput">
+                    No text has been obfuscated yet.
+                </div>
+            </div>
+        </div>
+        
+        <div class="info">
+            <h3>How it works</h3>
+            <p>This tool uses various zero-width and invisible Unicode characters that don't display in text but can affect how AI models tokenize and process text. The characters used include:</p>
+            
+            <table>
+                <tr>
+                    <th>Character</th>
+                    <th>Unicode</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>Zero Width Space</td>
+                    <td>U+200B</td>
+                    <td>Acts as a word break but doesn't display a space</td>
+                </tr>
+                <tr>
+                    <td>Zero Width Non-Joiner</td>
+                    <td>U+200C</td>
+                    <td>Prevents characters from joining in scripts like Arabic</td>
+                </tr>
+                <tr>
+                    <td>Zero Width Joiner</td>
+                    <td>U+200D</td>
+                    <td>Causes certain characters to join (used in emojis)</td>
+                </tr>
+                <tr>
+                    <td>Word Joiner</td>
+                    <td>U+2060</td>
+                    <td>Indicates word boundary without breaking</td>
+                </tr>
+                <tr>
+                    <td>Zero Width No-Break Space</td>
+                    <td>U+FEFF</td>
+                    <td>Also known as Byte Order Mark (BOM)</td>
+                </tr>
+                <tr>
+                    <td>Arabic Letter Mark</td>
+                    <td>U+061C</td>
+                    <td>Controls text direction in Arabic</td>
+                </tr>
+                <tr>
+                    <td>Invisible Separator</td>
+                    <td>U+2063</td>
+                    <td>Mathematical invisible separator</td>
+                </tr>
+            </table>
+            
+            <p><strong>Note:</strong> No obfuscation method is guaranteed to be completely effective against all AI systems, as models evolve and adapt over time.</p>
+        </div>
+        
+        <div class="footer">
+            <p>Advanced Text Obfuscator - Dark Theme Edition</p>
+        </div>
+    </div>
+
+    <script>
+        // Slider value display
+        const intensitySlider = document.getElementById('intensitySlider');
+        const intensityValue = document.getElementById('intensityValue');
+        intensitySlider.oninput = function() {
+            intensityValue.textContent = this.value + '%';
+        }
+        
+        document.getElementById('obfuscateButton').addEventListener('click', function() {
+            const inputText = document.getElementById('inputText').value;
+            const intensity = document.getElementById('intensitySlider').value / 100; // Convert to decimal
+            const placement = document.querySelector('input[name="placement"]:checked').value;
+            const useRandom = document.getElementById('useRandom').checked;
+            
+            // Get selected Unicode characters
+            const selectedUnicodes = [];
+            document.querySelectorAll('.unicode-char:checked').forEach(checkbox => {
+                selectedUnicodes.push(parseInt(checkbox.value, 16));
+            });
+            
+            if (selectedUnicodes.length === 0) {
+                alert("Please select at least one invisible character type.");
+                return;
+            }
+            
+            const result = obfuscateText(inputText, intensity, placement, selectedUnicodes, useRandom);
+            document.getElementById('outputText').value = result.text;
+            
+            // Update statistics
+            const statsOutput = document.getElementById('statsOutput');
+            statsOutput.innerHTML = `
+                <p>Original length: ${inputText.length} characters</p>
+                <p>Obfuscated length: ${result.text.length} characters</p>
+                <p>Invisible characters added: ${result.text.length - inputText.length}</p>
+                <p>Character distribution:</p>
+                <ul>
+                    ${Object.entries(result.charCounts).map(([char, count]) => 
+                        `<li>U+${char.codePointAt(0).toString(16).toUpperCase()}: ${count} times</li>`
+                    ).join('')}
+                </ul>
+            `;
+        });
+        
+        document.getElementById('clearButton').addEventListener('click', function() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('outputText').value = '';
+            document.getElementById('statsOutput').innerHTML = 'No text has been obfuscated yet.';
+        });
+        
+        document.getElementById('copyButton').addEventListener('click', function() {
+            const outputText = document.getElementById('outputText');
+            outputText.select();
+            document.execCommand('copy');
+            this.textContent = 'Copied!';
+            setTimeout(() => { this.textContent = 'Copy to Clipboard'; }, 2000);
+        });
+        
+        function obfuscateText(text, intensity, placement, unicodes, useRandom) {
+            // Convert Unicode values to actual characters
+            const invisibleChars = unicodes.map(code => String.fromCodePoint(code));
+            let result = '';
+            let charCounts = {};
+            
+            // Initialize character counts
+            invisibleChars.forEach(char => {
+                charCounts[char] = 0;
+            });
+            
+            // Function to get a random or sequential invisible character
+            let charIndex = 0;
+            function getInvisibleChar() {
+                if (useRandom) {
+                    const randomChar = invisibleChars[Math.floor(Math.random() * invisibleChars.length)];
+                    charCounts[randomChar] = (charCounts[randomChar] || 0) + 1;
+                    return randomChar;
+                } else {
+                    const char = invisibleChars[charIndex % invisibleChars.length];
+                    charIndex++;
+                    charCounts[char] = (charCounts[char] || 0) + 1;
+                    return char;
+                }
+            }
+            
+            // Apply different placement strategies
+            if (placement === 'between-chars') {
+                // Insert between each character
+                for (let i = 0; i < text.length; i++) {
+                    result += text[i];
+                    if (i < text.length - 1 && Math.random() < intensity) {
+                        result += getInvisibleChar();
+                    }
+                }
+            } else if (placement === 'around-words') {
+                // Insert around words
+                const words = text.split(' ');
+                for (let i = 0; i < words.length; i++) {
+                    if (Math.random() < intensity) {
+                        result += getInvisibleChar();
+                    }
+                    result += words[i];
+                    if (Math.random() < intensity) {
+                        result += getInvisibleChar();
+                    }
+                    if (i < words.length - 1) {
+                        result += ' ';
+                    }
+                }
+            } else if (placement === 'random') {
+                // Insert randomly throughout text
+                for (let i = 0; i < text.length; i++) {
+                    if (Math.random() < intensity) {
+                        result += getInvisibleChar();
+                    }
+                    result += text[i];
+                }
+                if (Math.random() < intensity) {
+                    result += getInvisibleChar();
+                }
+            }
+            
+            return {
+                text: result,
+                charCounts: charCounts
+            };
+        }
+    </script>
+</body>
+</html>
