@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="3; url=https://mishl.dev/">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redirecting...</title>
-  <style>
-    /* Basic reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    /* Full-screen container */
-    body, html {
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-    }
-
-    .loader {
-      font-size: 24px;
-      letter-spacing: 3px;
-      animation: fadeIn 1.5s ease-in-out infinite alternate;
-    }
-
-    /* Fade-in effect */
-    @keyframes fadeIn {
-      from { opacity: 0.2; }
-      to { opacity: 1; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Links</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .link-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        a {
+            text-decoration: none;
+            color: #00bcd4;
+            font-size: 1.5em;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #ff4081;
+        }
+    </style>
 </head>
 <body>
-  <div class="loader">redirecting to mishl.dev :3</div>
+    <h1>My Links</h1>
+    <div class="link-container">
+        <a href="https://mishl.dev/" target="_blank">mishl.dev</a>
+    </div>
 </body>
 </html>
