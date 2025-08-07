@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronouns.page Dynamic Visual Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        /* A few specific styles for SVG elements that are easier to manage here than with inline attributes */
+        .link-path {
+            fill: none;
+            stroke-opacity: 0.6;
+            transition: stroke-width 0.2s, stroke-opacity 0.2s;
+        }
+        .link-path.mutual { stroke-width: 2.5px; }
+        .link-path.oneway { stroke-width: 1.5px; stroke-dasharray: 5, 5; }
+        .link-path:hover { stroke-opacity: 1; stroke-width: 4px; }
+        
+        .node-group image { clip-path: circle(50%); }
+        .interaction-circle { fill: transparent; cursor: pointer; }
+        .node-label { text-anchor: middle; paint-order: stroke; stroke-linecap: butt; }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden bg-slate-100 text-slate-800 font-sans">
+    
+    <div class="bg-white p-4 border-b border-slate-200 shadow-sm flex items-center gap-4 flex-wrap z-10">
+        <label for="startUser" class="font-bold text-sm">Username:</label>
+        <input type="text" id="startUser" placeholder="e.g., spadescyan" value="spadescyan" class="w-40 p-2 text-sm border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        <label for="maxDepth" class="font-bold text-sm ml-2">Depth:</label>
+        <input type="number" id="maxDepth" value="2" min="0" max="5" class="w-20 p-2 text-sm border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        <label for="apiDelay" class="font-bold text-sm ml-2">Delay (ms):</label>
+        <input type="number" id="apiDelay" value="250" min="0" step="50" class="w-20 p-2 text-sm border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        <button id="startButton" class="px-4 py-2 text-sm bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-700 transition disabled:bg-slate-400 disabled:cursor-not-allowed">Build Web</button>
+        <div id="status" class="text-slate-500 italic ml-auto text-right pr-2 text-sm">Ready to explore.</div>
+    </div>
+    
+    <!-- Main content area with chart and stats panel -->
+    <main class="flex-grow flex flex-row overflow-hidden">
+        <div id="chart" class="flex-grow relative"></div>
+        
+        <!-- Statistics Panel -->
+        <aside id="statsPanel" class="w-72 bg-white border-l border-slate-200 p-4 overflow-y-auto space-y-4">
+            <h2 class="text-lg font-bold text-slate-800 border-b pb-2">Network Statistics</h2>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <div class="text-sm font-semibold text-slate-500">Total Users</div>
+                    <div id="totalUsersStat" class="text-2xl font-bold text-blue-600">0</div>
+                </div>
+                <div>
+                    <div class="text-sm font-semibold text-slate-500">Avg. Age</div>
+                    <div id="avgAgeStat" class="text-2xl font-bold text-blue-600">N/A</div>
+                </div>
+            </div>
+
+            <div>
+                <div class="text-sm font-semibold text-slate-500">Top Pronoun</div>
+                <div id="topPronounStat" class="text-xl font-bold text-blue-600">N/A</div>
+            </div>
+
+            <div>
+                <div class="text-sm font-semibold text-slate-500">Relationships</div>
+                <div class="flex items-center gap-4 text-sm mt-1">
+                    <span id="mutualLinksStat">Mutual: 0</span>
+                    <span id="onewayLinksStat">One-way: 0</span>
+                </div>
+            </div>
+
+            <hr class="border-slate-200">
+
+            <div>
+                <div class="text-sm font-semibold text-slate-500 mb-2">Most Common Flags</div>
+                <div id="topFlagsList" class="flex flex-wrap gap-2">
+                    <span class="text-xs text-slate-400">No flags found yet...</span>
+                </div>
+            </div>
+        </aside>
+    </main>
+    
+    <!-- Tooltip -->
+    <div id="tooltip" class="absolute text-left p-3 text-xs bg-slate-900/90 text-white rounded-md pointer-events-none opacity-0 transition-opacity duration-200 z-20 max-w-xs leading-normal"></div>
+
+    <script>
+        // --- All variables and event listeners remain the same ---
+        const startButton = document.getElementById('startButton');
+        const userInput = document.getElementById('startUser');
+        const depthInput = document.getElementById('maxDepth');
+        const delayInput = document.getElementById('apiDelay');
+        const chartDiv = document.getElementById('chart');
+        const statusDiv = document.getElementById('status');
+        const tooltipDiv = document.getElementById('tooltip');
+        const API_BASE_URL = "https://en.pronouns.page/api/profile/get/";
+
+        let nodes = [], links = [], simulation, svg, g, linkGroup, nodeGroup, colorScale;
+        
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+        startButton.addEventListener('click', async () => {
+            const startUser = userInput.value.trim();
+            if (!startUser) return;
+            startButton.disabled = true;
+            statusDiv.textContent = 'Initializing...';
+            initChart();
+            const maxDepth = parseInt(depthInput.value, 10);
+            const apiDelay = parseInt(delayInput.value, 10);
+            let processedUsers = new Set();
+            await processUser(startUser, 0, maxDepth, apiDelay, processedUsers);
+            statusDiv.textContent = `Exploration complete! Found ${nodes.length} users.`;
+            startButton.disabled = false;
+        });
+
+        // --- initChart, processUser, ticked, and drag are the same as before ---
+        function initChart() {
+            chartDiv.innerHTML = '';
+            nodes = [];
+            links = [];
+            colorScale = d3.scaleOrdinal(d3.schemeTableau10);
+            const width = chartDiv.clientWidth;
+            const height = chartDiv.clientHeight;
+            svg = d3.select("#chart").append("svg")
+                .attr("width", width).attr("height", height)
+                .call(d3.zoom().on("zoom", (event) => g.attr("transform", event.transform)));
+            g = svg.append("g");
+            simulation = d3.forceSimulation()
+                .force("link", d3.forceLink().id(d => d.id).distance(150).strength(0.5))
+                .force("charge", d3.forceManyBody().strength(-600))
+                .force("center", d3.forceCenter(width / 2, height / 2))
+                .force("collide", d3.forceCollide().radius(40))
+                .on("tick", ticked);
+            linkGroup = g.append("g").attr("class", "links");
+            nodeGroup = g.append("g").attr("class", "nodes");
+        }
+
+        async function processUser(username, depth, maxDepth, apiDelay, processedUsers) {
+            const lowerUser = username.toLowerCase();
+            if (depth > maxDepth || processedUsers.has(lowerUser)) return;
+            processedUsers.add(lowerUser);
+            statusDiv.textContent = `(Depth ${depth}) Fetching: ${username}...`;
+            try {
+                const response = await fetch(`${API_BASE_URL}${username}?version=2`);
+                if (!response.ok) throw new Error(`API error`);
+                const data = await response.json();
+                const profile = data.profiles.en;
+                if (!profile) throw new Error(`No 'en' profile`);
+                const preferredPronoun = profile.pronouns.find(p => p.opinion === 'yes')?.value || profile.pronouns[0]?.value || 'N/A';
+                let currentNode = nodes.find(n => n.id.toLowerCase() === lowerUser);
+                if (!currentNode) {
+                    currentNode = { id: username, username, depth };
+                    nodes.push(currentNode);
+                }
+                Object.assign(currentNode, {
+                    avatar: data.avatar,
+                    pronouns: preferredPronoun,
+                    age: profile.age,
+                    flags: profile.flags,
+                    description: profile.description,
+                });
+                if (profile.circle) {
+                    for (const member of profile.circle) {
+                        const targetUser = member.username;
+                        if (!nodes.some(n => n.id.toLowerCase() === targetUser.toLowerCase())) {
+                            nodes.push({ id: targetUser, username: targetUser, avatar: null, pronouns: '...', depth: depth + 1 });
+                        }
+                        links.push({
+                            source: username, target: targetUser,
+                            relationship: member.relationship, mutual: member.circleMutual,
+                            depth: depth 
+                        });
+                    }
+                }
+                updateChart();
+                if (profile.circle) {
+                    for (const member of profile.circle) {
+                        await sleep(apiDelay);
+                        await processUser(member.username, depth + 1, maxDepth, apiDelay, processedUsers);
+                    }
+                }
+            } catch (error) {
+                console.error(`Failed for ${username}:`, error.message);
+                statusDiv.textContent = `Error for ${username}. Skipping.`;
+                let errorNode = nodes.find(n => n.id.toLowerCase() === lowerUser);
+                if (errorNode) {
+                    errorNode.username = `${username} (Error)`;
+                    errorNode.pronouns = 'N/A';
+                    errorNode.isError = true;
+                }
+                updateChart();
+            }
+        }
+        
+        function ticked() {
+            g.selectAll("path.link-path").attr("d", d => {
+                const dx = d.target.x - d.source.x;
+                const dy = d.target.y - d.source.y;
+                const dr = d.mutual ? 0 : Math.sqrt(dx * dx + dy * dy);
+                return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`;
+            });
+            g.selectAll("g.node-group").attr("transform", d => `translate(${d.x},${d.y})`);
+        }
+
+        function drag(simulation) {
+            function dragstarted(event, d) { if (!event.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; }
+            function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
+            function dragended(event, d) { if (!event.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; }
+            return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
+        }
+        
+        // --- New function to calculate and display statistics ---
+        function updateStatistics() {
+            // Calculate Average Age
+            const usersWithAge = nodes.filter(d => d.age && typeof d.age === 'number');
+            const avgAge = d3.mean(usersWithAge, d => d.age);
+            document.getElementById('avgAgeStat').textContent = avgAge ? avgAge.toFixed(1) : 'N/A';
+            
+            // Calculate Total Users
+            document.getElementById('totalUsersStat').textContent = nodes.length;
+
+            // Calculate Link types
+            const mutualLinks = links.filter(l => l.mutual).length;
+            document.getElementById('mutualLinksStat').textContent = `Mutual: ${mutualLinks}`;
+            document.getElementById('onewayLinksStat').textContent = `One-way: ${links.length - mutualLinks}`;
+
+            const validNodes = nodes.filter(d => d.pronouns !== '...');
+
+            // Find Most Common Pronoun
+            const pronounCounts = new Map();
+            validNodes.forEach(d => {
+                if (d.pronouns && d.pronouns !== 'N/A') {
+                    pronounCounts.set(d.pronouns, (pronounCounts.get(d.pronouns) || 0) + 1);
+                }
+            });
+            const topPronoun = [...pronounCounts.entries()].sort((a, b) => b[1] - a[1])[0];
+            document.getElementById('topPronounStat').textContent = topPronoun ? topPronoun[0] : 'N/A';
+
+            // Find Most Common Flags
+            const flagCounts = new Map();
+            validNodes.forEach(d => {
+                if (d.flags && Array.isArray(d.flags)) {
+                    d.flags.forEach(flag => {
+                        flagCounts.set(flag, (flagCounts.get(flag) || 0) + 1);
+                    });
+                }
+            });
+            const topFlags = [...flagCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10);
+            const topFlagsList = document.getElementById('topFlagsList');
+            if (topFlags.length > 0) {
+                topFlagsList.innerHTML = topFlags.map(([flag, count]) => 
+                    `<span class="px-2 py-1 bg-slate-200 text-slate-700 text-xs font-medium rounded-full">${flag} (${count})</span>`
+                ).join('');
+            } else {
+                topFlagsList.innerHTML = `<span class="text-xs text-slate-400">No flags found yet...</span>`;
+            }
+        }
+
+        function updateChart() {
+            simulation.nodes(nodes);
+            simulation.force("link").links(links);
+
+            // --- Node drawing logic (unchanged) ---
+            const nodeElements = nodeGroup.selectAll("g.node-group").data(nodes, d => d.id);
+            nodeElements.exit().remove();
+            const nodeEnter = nodeElements.enter().append("g").attr("class", "node-group");
+            nodeEnter.append("circle").attr("class", "background-circle").attr("r", 25);
+            nodeEnter.append("image").attr("x", -25).attr("y", -25).attr("width", 50).attr("height", 50);
+            nodeEnter.append("text").attr("class", "node-label text-xs font-medium fill-slate-700 stroke-slate-100 [stroke-width:3px]").attr("y", 40);
+            nodeEnter.append("circle").attr("class", "interaction-circle").attr("r", 30);
+            const mergedNodes = nodeEnter.merge(nodeElements);
+            mergedNodes.select("image").attr("xlink:href", d => d.avatar);
+            mergedNodes.select("text.node-label").text(d => d.username);
+            mergedNodes.select("circle.background-circle").attr("fill", d => d.isError ? '#ef4444' : '#cbd5e1');
+            mergedNodes.select(".interaction-circle")
+                .call(drag(simulation))
+                .on("mouseover", (event, d) => {
+                    let tooltipContent = `<strong class="font-bold text-white">${d.username}</strong><br>Pronouns: ${d.pronouns || 'N/A'}`;
+                    if (d.age) tooltipContent += `<br>Age: ${d.age}`;
+                    if (d.flags && d.flags.length > 0) tooltipContent += `<br>Flags: ${d.flags.join(', ')}`;
+                    if (d.description) {
+                        const shortDesc = d.description.length > 150 ? d.description.substring(0, 150) + '…' : d.description;
+                        tooltipContent += `<hr class="my-1.5 border-slate-600"><em class="text-slate-300">${shortDesc.replace(/\n/g, '<br>')}</em>`;
+                    }
+                    tooltipDiv.innerHTML = tooltipContent;
+                    tooltipDiv.classList.add('opacity-100');
+                })
+                .on("mousemove", (event) => {
+                    tooltipDiv.style.left = (event.pageX + 15) + "px";
+                    tooltipDiv.style.top = (event.pageY - 15) + "px";
+                })
+                .on("mouseout", () => tooltipDiv.classList.remove('opacity-100'));
+
+            // --- Link drawing logic (unchanged) ---
+            const linkElements = linkGroup.selectAll("path.link-path").data(links, d => `${d.source.id}-${d.target.id}`);
+            linkElements.exit().remove();
+            const mergedLinks = linkElements.enter().append("path").merge(linkElements);
+            mergedLinks
+                .attr("class", d => `link-path ${d.mutual ? 'mutual' : 'oneway'}`)
+                .attr("stroke", d => colorScale(d.depth))
+                .on("mouseover", (event, d) => {
+                    tooltipDiv.innerHTML = `<strong class="font-bold text-white">${d.source.username} → ${d.target.username}</strong><br>${d.mutual ? '<em class="text-slate-300">(Mutual relationship)</em><br>' : ''}<em class="text-slate-300">${d.relationship || 'No description'}</em>`;
+                    tooltipDiv.classList.add('opacity-100');
+                }).on("mousemove", (event) => {
+                    tooltipDiv.style.left = (event.pageX + 15) + "px";
+                    tooltipDiv.style.top = (event.pageY - 15) + "px";
+                }).on("mouseout", () => tooltipDiv.classList.remove('opacity-100'));
+
+            // --- This is the key addition ---
+            // After updating the chart, update the stats panel.
+            updateStatistics();
+
+            simulation.alpha(0.3).restart();
+        }
+    </script>
+</body>
+</html>
